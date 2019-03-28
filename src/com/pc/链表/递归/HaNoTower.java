@@ -32,7 +32,16 @@ package com.pc.链表.递归;
  * @Date 2019/3/28 12:30
  **/
 public class HaNoTower {
+    static int count=0;
+    /**
+     *
+     * @param n 要移动的盘子数
+     * @param source 盘子当前所在的位置
+     * @param temp  中间盘子
+     * @param target 盘子移动的目标位置
+     */
     public static void process(int n,String source,String temp,String target) {
+        count++;
         if (n==1){
             System.out.println(String.format("将%s从盘%s移动(中间盘%s)到盘%s",1,source,temp,target));
         } else {
@@ -54,6 +63,7 @@ public class HaNoTower {
     public static void main(String[] args) {
 //        process(1,"A","B","C");
 //        process(2,"A","B","C");
-        process(3,"A","B","C");
+        process(5,"A","B","C");
+        System.out.println(String.format("移动的总次数是%s",count));
     }
 }
