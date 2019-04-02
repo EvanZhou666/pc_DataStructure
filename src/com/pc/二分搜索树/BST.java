@@ -1,7 +1,5 @@
 package com.pc.二分搜索树;
 
-import com.pc.栈.Stack;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Random;
@@ -262,8 +260,6 @@ public class BST<E extends Comparable<E>> {
                 queue.offer(poll.right);
             }
         }
-
-
     }
 
     private class Node {
@@ -277,12 +273,12 @@ public class BST<E extends Comparable<E>> {
 
     public static void main(String[] args) {
         BST<Integer> ebst = new BST<>();
-      /*  ebst.add(8);
+        ebst.add(8);
         ebst.add(7);
         ebst.add(6);
         ebst.add(100);
-        ebst.add(88);*/
-       /* ebst.add2(8);
+        ebst.add(88);
+        ebst.add2(8);
         ebst.add2(7);
         ebst.add2(6);
         ebst.add2(50);
@@ -304,7 +300,7 @@ public class BST<E extends Comparable<E>> {
         ebst.levelOrder();
         ebst.remove(8);
         System.out.println("删除元素层序遍历结果：");
-        ebst.levelOrder();*/
+        ebst.levelOrder();
        int[] nums= new int[10];
        for (int i =0;i<10;i++){
            int rand = new Random().nextInt(1000);

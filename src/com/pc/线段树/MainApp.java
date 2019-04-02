@@ -18,15 +18,19 @@ public class MainApp {
         return rands;
     }
     public static void main(String[] args) {
-        Integer[] rands = rands(10, 20);
-//        Integer[] rands = new Integer[]{20, 2, 5, 2, 10, 4, 14, 1, 11, 8};
+//        Integer[] rands = rands(5, 10);
+        Integer[] rands = new Integer[]{2, 3, 8, 1, 10,6};
         System.out.println("arrays:"+Arrays.toString(rands));
         SegmentTree<Integer> segmentTree = new SegmentTree<>(rands, new Merger() {
             public Object merge(Object a, Object b) {
                 return (Integer)a+ (Integer)b;
             }
         });
-
-        System.out.println(segmentTree.toString());;
+        System.out.println(segmentTree.toString());
+        segmentTree.levelOrder();
+        System.out.println( segmentTree.query(2,3));
+        segmentTree.set(2,5);
+        System.out.println( segmentTree.query(2,3));
+        System.out.println( segmentTree.query(1,4));
     }
 }

@@ -1,5 +1,7 @@
 package com.pc.线段树;
 
+import java.util.LinkedList;
+
 /**
  * 线段树：
  * 为什么要使用线段树？
@@ -18,6 +20,7 @@ public class SegmentTree<E> {
     private E[] tree;
     private E[] data;
     private Merger<E> merger;
+    private  static final  String newLine = "\r\n";
     public SegmentTree(E[] arr,Merger merger){
         this.merger = merger;
         data = (E[]) new Object[arr.length];
@@ -46,11 +49,11 @@ public class SegmentTree<E> {
     }
 
     private int rightTreeIndex(int treeindex) {
-        return (treeindex<<1)+1;
+        return (treeindex<<1)+2;
     }
 
     private int leftTreeIndex(int treeindex) {
-        return (treeindex<<1)+2;
+        return (treeindex<<1)+1;
     }
 
     public int getSize(){
@@ -64,22 +67,57 @@ public class SegmentTree<E> {
         return data[index];
     }
 
+    // 在以treeIndex为根的线段树中[l...r]的范围里，搜索区间[queryL...queryR]的值
     private E query(int treeIndex , int l ,int r,int queryL,int queryR){
         if (l== queryL && r==queryR){
             return tree[treeIndex];
         }
-
-        return null;
+        int mid = l+(r-l)/2;
+        int leftTreeIndex = leftTreeIndex(treeIndex);
+        int rightTreeIndex = rightTreeIndex(treeIndex);
+        if (queryR<=mid){
+            return query(leftTreeIndex,l,mid,queryL,queryR);
+        } else if (queryL>mid){
+            return query(rightTreeIndex,mid+1,r,queryL,queryR);
+        } else {
+            E leftResult = query(leftTreeIndex, l, mid, queryL, mid);
+            E ringhtResult = query(rightTreeIndex,mid+1,r,mid+1,queryR);
+            return merger.merge(leftResult, ringhtResult);
+        }
     }
 
 //    返回区间[queryL,queryR]的值
     public E query(int queryL ,int queryR){
+        System.out.println(String.format("查询线段数区间为[%s,%s]的值：",queryL,queryR));
         if (queryL<0||queryL>=data.length||queryR<0||queryR>=data.length||queryL>queryR)
             throw new IllegalArgumentException("索引下标不合法");
-
-        return null;
+        return query(0,0,data.length-1,queryL,queryR);
     }
 
+    public void set(int index , E e) {
+        tree[index] = e;
+        set(0,0,data.length-1,index,e);
+    }
+
+    private void set (int treeIndex , int l ,int r, int index , E e) {
+        if (l==r){
+            tree[treeIndex] = e;
+            return;
+        }
+        int mid = l +(r-l)/2;
+        int leftTreeIndex = leftTreeIndex(treeIndex);
+        int rightTreeIndex = rightTreeIndex(treeIndex);
+        if (index >= mid+1){
+            set(rightTreeIndex,mid+1,r,index,e);
+        } else {
+            set(leftTreeIndex,l,mid,index,e);
+        }
+        tree[treeIndex] = merger.merge(tree[leftTreeIndex],tree[rightTreeIndex]);
+    }
+
+    private int parentIndex (int childIndex) {
+        return (childIndex-1)/2;
+    }
     @Override
     public String toString(){
         StringBuilder res = new StringBuilder();
@@ -88,10 +126,46 @@ public class SegmentTree<E> {
             if (tree[i]!=null) res.append(tree[i]+" ");
             else res.append("null ");
 //            i不在最后一个位置
-//            if (i!=tree.length-)
-            
+            if (i!=tree.length-1)
+                res.append(", ");
         }
-
+        res.append("]");
         return res.toString();
+    }
+    //    层序遍历线段树
+    public void levelOrder(){
+        LinkedList<Object> quque = new LinkedList();
+        if (tree.length>0){
+            quque.offer(tree[0]);
+            quque.offer(newLine);
+            doLevelOrder(quque,0);
+        }
+    }
+
+    //    层序遍历：每次出队一个元素，便将该节点的左右孩子节点分别入队。
+    public void doLevelOrder(LinkedList queue,int index){
+        while (!queue.isEmpty()){
+            E poll = (E)queue.poll();
+            if (newLine.equals(poll)){
+                System.out.print(poll);
+                continue;
+            }
+            System.out.print(poll+" ");
+            if (leftTreeIndex(index)<tree.length){
+                queue.offer(tree[leftTreeIndex(index)]);
+            }
+            if (rightTreeIndex(index)<tree.length){
+                queue.offer(tree[rightTreeIndex(index)]);
+            }
+
+//          如果是每一层的最后一个元素,入队换行符 每一层最后一个元素的索引满足:index = 2^n-2;
+            int intValue = index==0?0:(int)(Math.log(index) / Math.log(2));
+//            System.out.println("indexValue："+intValue);
+            int verify = (2 << intValue);
+            if (verify-2 == index){
+                queue.offer(newLine);
+            }
+            index++;
+        }
     }
 }
