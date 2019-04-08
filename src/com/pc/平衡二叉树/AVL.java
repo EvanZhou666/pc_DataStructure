@@ -1,6 +1,7 @@
 package com.pc.平衡二叉树;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -64,7 +65,7 @@ public class AVL<K extends Comparable<K>,V> {
             root.value = node.value;
             retNode = root;
         }
-        root.height +=1;
+        root.height =Math.max(getHeight(root.left),getHeight(root.right))+1;
 //        LL：右旋
         if (getBalanceFactor(root)>1&&getBalanceFactor(root.left)>0){
           /*  Node x = root.left;
@@ -119,6 +120,11 @@ public class AVL<K extends Comparable<K>,V> {
         if (Math.abs(getBalanceFactor(root))>1) {
             return false;
         }
+        if (root.left!=null && root.left.key.compareTo(root.key)>0) {
+            return false;
+        } else if (root.right!=null && root.right.key.compareTo(root.key)<0){
+            return false;
+        }
 
         boolean avlleft = isAVLTree(root.left, list);
         boolean avlright = isAVLTree(root.right, list);
@@ -165,6 +171,74 @@ public class AVL<K extends Comparable<K>,V> {
         return x;
     }
 
+    //    删除元素
+    public void remove(K key) {
+        doRemove(key,root);
+
+    }
+
+    private Node doRemove(K e ,Node root){
+        if (root==null){
+            return null;
+        }
+        if (e.compareTo(root.key)==0){
+//            如果是叶子节点 直接删除
+            if (root.left==null&&root.right==null){
+                size--;
+                return null;
+            }
+//            如果左右子树均不为空，从该节点的右子树中找一个最小的元素(因为该元素大小最接近要被删除的元素，而且一定没有左孩子)，替换该节点。
+            if(root.left!=null&&root.right!=null){
+                Node mixInSubTree = dofindMix(root.right);
+//                System.out.println("右子树中最小元素是："+mixInSubTree.data);
+                root.value = mixInSubTree.value;
+                root.right = doRemove(mixInSubTree.key,root.right);
+                return root;
+            } else {
+//                如果左孩子节点或者是右孩子节点不为空
+                size--;
+                return root.left==null?root.right:root.left;
+            }
+        }
+
+        if (e.compareTo(root.key)>0){
+            root.right = doRemove(e,root.right);
+        }else if (e.compareTo(root.key)<0){
+            root.left = doRemove(e,root.left);
+        }
+        return root;
+    }
+
+    private Node dofindMix(Node right) {
+        return null;
+    }
+
+    //    层序遍历二分搜索树
+    public void levelOrder(){
+        LinkedList<Node> quque = new LinkedList();
+        if (root!=null&&size>0){
+            quque.offer(root);
+            doLevelOrder(quque);
+        }
+    }
+
+    /**
+     * AVL树层序遍历
+     * @param queue
+     */
+    public void doLevelOrder(LinkedList queue){
+        while (!queue.isEmpty()){
+            Node poll = (Node)queue.poll();
+            System.out.println(poll.key);
+            if (poll.left!=null){
+                queue.offer(poll.left);
+            }
+            if (poll.right!=null){
+                queue.offer(poll.right);
+            }
+        }
+    }
+
     private class Node {
         private Node left;
         private Node right;
@@ -185,6 +259,9 @@ public class AVL<K extends Comparable<K>,V> {
         avl.add(5,null);
         avl.add(7,null);
         avl.add(9,null);
+        avl.add(10,null);
+        avl.add(11,null);
         System.out.println("isAVLTree:"+avl.isAVLTree());
+        avl.levelOrder();
     }
 }
