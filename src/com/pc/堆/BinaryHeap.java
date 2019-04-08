@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
+/**
+ * 最小堆：堆中某个节点的值总是不大于其父节点的值
+ */
 public class BinaryHeap<E extends Comparable<E>> {
     private int currentSize;
     private int capasity;
