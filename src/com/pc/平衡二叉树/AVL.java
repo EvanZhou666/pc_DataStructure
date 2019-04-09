@@ -135,82 +135,125 @@ public class AVL<K extends Comparable<K>,V> {
 
 
     /**
-     * 左旋操作:
+     * 左旋操作: 注意旋转的是哪一个节点
      *        r                         x
-     *        \            左旋        /  \
+     *        \            r左旋        /  \
      *        x           ----->     r    y
      *       / \                     \     \
      *      n1  y                     n1    n2
      *          \
      *           n2
+     * 旋转一次，不忘维护节点的高度
      */
     private Node leftRotate (Node root) {
         Node x = root.right;
         Node n1 = x.left;
         x.left = root;
         root.right = n1;
+        root.height = Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+        x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
         return x;
     }
 
     /**
      * //右旋操作: 新插入的节点位于y的左子树上
      *        r                           x
-     *      /  \          右旋           /  \
+     *      /  \         r右旋           /  \
      *     x    n1        ----->        y   r
      *    / \                         /    / \
      *   y   n2                      n3   n2  n1
      *  /
      * n3
      *
+     * 旋转一次，不忘维护节点的高度
      */
     private Node rightRotate (Node root) {
         Node x = root.left;
         Node n2 = x.right;
         x.right = root;
         root.left = n2;
+        root.height = Math.max(getHeight(root.left), getHeight(root.right)) + 1;
+        x.height = Math.max(getHeight(x.left), getHeight(x.right)) + 1;
         return x;
     }
 
     //    删除元素
     public void remove(K key) {
-        doRemove(key,root);
+        root = doRemove(key,root);
 
     }
 
-    private Node doRemove(K e ,Node root){
-        if (root==null){
+    private Node doRemove(K e, Node root) {
+        if (root == null) {
             return null;
         }
-        if (e.compareTo(root.key)==0){
+        Node retNode = null;
+        if (e.compareTo(root.key) == 0) {
 //            如果是叶子节点 直接删除
-            if (root.left==null&&root.right==null){
+            if (root.left == null && root.right == null) {
                 size--;
                 return null;
             }
-//            如果左右子树均不为空，从该节点的右子树中找一个最小的元素(因为该元素大小最接近要被删除的元素，而且一定没有左孩子)，替换该节点。
-            if(root.left!=null&&root.right!=null){
-                Node mixInSubTree = dofindMix(root.right);
-//                System.out.println("右子树中最小元素是："+mixInSubTree.data);
-                root.value = mixInSubTree.value;
-                root.right = doRemove(mixInSubTree.key,root.right);
-                return root;
-            } else {
-//                如果左孩子节点或者是右孩子节点不为空
+//           如果左孩子节点或者是右孩子节点不为空
+            else if ((root.left == null) ^ (root.right == null)) {
                 size--;
-                return root.left==null?root.right:root.left;
+                retNode = root.left == null ? root.right : root.left;
+                if (root.left == null) {
+                    root.right = null;
+                } else {
+                    root.left = null;
+                }
+            }
+//           如果左右子树均不为空，从该节点的右子树中找一个最小的元素(因为该元素大小最接近要被删除的元素，而且一定没有左孩子)，替换该节点。
+            else if (root.left != null && root.right != null) {
+                Node minInSubTree = dofindMin(root.right);
+//                System.out.println("右子树中最小元素是："+minInSubTree.data);
+//                root.value = minInSubTree.value;
+                minInSubTree.right = doRemove(minInSubTree.key, root.right);
+                minInSubTree.left = root.left;
+                root.left = root.right = null;
+                retNode = minInSubTree;
             }
         }
 
-        if (e.compareTo(root.key)>0){
-            root.right = doRemove(e,root.right);
-        }else if (e.compareTo(root.key)<0){
-            root.left = doRemove(e,root.left);
+        else if (e.compareTo(root.key) > 0) {
+            root.right = doRemove(e, root.right);
+            retNode = root;
         }
-        return root;
+        else if (e.compareTo(root.key) < 0) {
+            root.left = doRemove(e, root.left);
+            retNode = root;
+        }
+//        if (retNode == null) return null;
+        retNode.height =Math.max(getHeight(retNode.left),getHeight(retNode.right))+1;
+//        LL：右旋
+        if (getBalanceFactor(retNode)>1&&getBalanceFactor(retNode.left)>0){
+            retNode = rightRotate(retNode);
+        }
+//        RR：左旋
+        else if ((getBalanceFactor(retNode) < -1 && getBalanceFactor(retNode.right) < 0)) {
+            retNode = leftRotate(retNode);
+        }
+//        LR：
+        else if ((getBalanceFactor(retNode) > 1 && getBalanceFactor(retNode.right) < 0)){
+            leftRotate(retNode.left);
+            retNode = rightRotate(retNode);
+        }
+
+//        RL:先右旋转，再左旋转。
+        else if ((getBalanceFactor(retNode) < -1 && getBalanceFactor(retNode.left) > 0)) {
+            rightRotate(retNode.right);
+            retNode = leftRotate(retNode);
+        }
+
+        return retNode;
     }
 
-    private Node dofindMix(Node right) {
-        return null;
+    private Node dofindMin(Node node) {
+        if (node.left == null) {
+            return node;
+        }
+        return dofindMin(node.left);
     }
 
     //    层序遍历二分搜索树
@@ -229,7 +272,7 @@ public class AVL<K extends Comparable<K>,V> {
     public void doLevelOrder(LinkedList queue){
         while (!queue.isEmpty()){
             Node poll = (Node)queue.poll();
-            System.out.println(poll.key);
+            System.out.println(poll.key+"height:"+poll.height);
             if (poll.left!=null){
                 queue.offer(poll.left);
             }
@@ -261,6 +304,7 @@ public class AVL<K extends Comparable<K>,V> {
         avl.add(9,null);
         avl.add(10,null);
         avl.add(11,null);
+        avl.remove(11);
         System.out.println("isAVLTree:"+avl.isAVLTree());
         avl.levelOrder();
     }
