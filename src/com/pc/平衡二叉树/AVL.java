@@ -65,21 +65,13 @@ public class AVL<K extends Comparable<K>,V> {
             root.value = node.value;
             retNode = root;
         }
-        root.height =Math.max(getHeight(root.left),getHeight(root.right))+1;
+        retNode.height =Math.max(getHeight(retNode.left),getHeight(retNode.right))+1;
+//        注意判断失衡形态的条件，包括边界值，以及getBalanceFactor函数里的节点是谁。
 //        LL：右旋
-        if (getBalanceFactor(root)>1&&getBalanceFactor(root.left)>0){
-          /*  Node x = root.left;
-            Node y = x.right;
-            x.right = y;
-            root.left = x;
-            retNode = x;*/
-            retNode = rightRotate(root);
-        } else if ((getBalanceFactor(root) < -1 && getBalanceFactor(root.right) < 0)) {
-           /* Node x = root.right;
-            Node y = x.left;
-            x.left = root;
-            root.left = y;*/
-            retNode = leftRotate(root);
+        if (getBalanceFactor(retNode)>1&&getBalanceFactor(retNode.left)>=0){
+            retNode = rightRotate(retNode);
+        } else if ((getBalanceFactor(retNode) < -1 && getBalanceFactor(retNode.right) <= 0)) {
+            retNode = leftRotate(retNode);
         }
         /**
          *  n1 、n2 代表是一颗子树，当然一个节点也可以看做一颗子树，新插入的接点位于n2子树上
@@ -93,15 +85,15 @@ public class AVL<K extends Comparable<K>,V> {
          *
          */
 //        LR:先左旋转，再右旋转。
-        else if ((getBalanceFactor(root) > 1 && getBalanceFactor(root.right) < 0)){
-            leftRotate(root.left);
-            retNode = rightRotate(root);
+        else if ((getBalanceFactor(retNode) > 1 && getBalanceFactor(retNode.left) < 0)){
+            retNode.left = leftRotate(retNode.left);//旋转之后一定要再次接住
+            retNode = rightRotate(retNode);
         }
 
 //        RL:先右旋转，再左旋转。
-        else if ((getBalanceFactor(root) < -1 && getBalanceFactor(root.left) > 0)) {
-            rightRotate(root.right);
-            retNode = leftRotate(root);
+        else if ((getBalanceFactor(retNode) < -1 && getBalanceFactor(retNode.right) > 0)) {
+            retNode.right = rightRotate(retNode.right); //旋转之后一定要再次接住
+            retNode = leftRotate(retNode);
         } else{
 
         }
@@ -137,7 +129,7 @@ public class AVL<K extends Comparable<K>,V> {
     /**
      * 左旋操作: 注意旋转的是哪一个节点
      *        r                         x
-     *        \            r左旋        /  \
+     *        \           r左旋        /  \
      *        x           ----->     r    y
      *       / \                     \     \
      *      n1  y                     n1    n2
@@ -227,22 +219,22 @@ public class AVL<K extends Comparable<K>,V> {
 //        if (retNode == null) return null;
         retNode.height =Math.max(getHeight(retNode.left),getHeight(retNode.right))+1;
 //        LL：右旋
-        if (getBalanceFactor(retNode)>1&&getBalanceFactor(retNode.left)>0){
+        if (getBalanceFactor(retNode)>1&&getBalanceFactor(retNode.left)>=0){
             retNode = rightRotate(retNode);
         }
 //        RR：左旋
-        else if ((getBalanceFactor(retNode) < -1 && getBalanceFactor(retNode.right) < 0)) {
+        else if ((getBalanceFactor(retNode) < -1 && getBalanceFactor(retNode.right) <=0)) {
             retNode = leftRotate(retNode);
         }
 //        LR：
-        else if ((getBalanceFactor(retNode) > 1 && getBalanceFactor(retNode.right) < 0)){
-            leftRotate(retNode.left);
+        else if ((getBalanceFactor(retNode) > 1 && getBalanceFactor(retNode.left) < 0)){
+            retNode.left = leftRotate(retNode.left);
             retNode = rightRotate(retNode);
         }
 
 //        RL:先右旋转，再左旋转。
-        else if ((getBalanceFactor(retNode) < -1 && getBalanceFactor(retNode.left) > 0)) {
-            rightRotate(retNode.right);
+        else if ((getBalanceFactor(retNode) < -1 && getBalanceFactor(retNode.right) > 0)) {
+            retNode.right = rightRotate(retNode.right);
             retNode = leftRotate(retNode);
         }
 
@@ -282,6 +274,30 @@ public class AVL<K extends Comparable<K>,V> {
         }
     }
 
+    // 返回以node为根节点的二分搜索树中，key所在的节点
+    private Node getNode(Node node, K key){
+
+        if(node == null)
+            return null;
+
+        if(key.equals(node.key))
+            return node;
+        else if(key.compareTo(node.key) < 0)
+            return getNode(node.left, key);
+        else // if(key.compareTo(node.key) > 0)
+            return getNode(node.right, key);
+    }
+
+    public boolean contains(K key){
+        return getNode(root, key) != null;
+    }
+
+    public V get(K key){
+
+        Node node = getNode(root, key);
+        return node == null ? null : node.value;
+    }
+
     private class Node {
         private Node left;
         private Node right;
@@ -307,5 +323,7 @@ public class AVL<K extends Comparable<K>,V> {
         avl.remove(11);
         System.out.println("isAVLTree:"+avl.isAVLTree());
         avl.levelOrder();
+
+
     }
 }
