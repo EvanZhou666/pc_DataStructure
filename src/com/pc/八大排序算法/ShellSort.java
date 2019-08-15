@@ -1,7 +1,5 @@
 package com.pc.八大排序算法;
 
-import java.util.Arrays;
-
 /**
  * @Description
  * 希尔排序
@@ -9,8 +7,7 @@ import java.util.Arrays;
  * @Date 2019/8/15
  **/
 public class ShellSort {
-    public static void main(String[] args) {
-        int arr[] = new int[]{8, 9, 1, 7, 2, 3, 5, 4, 6, 0};
+    public static void shellSort(int arr[]) {
         int gap = arr.length / 2; //分为5组 每组两个 （55,27）
         int temp;
         while (gap > 0) {
@@ -26,8 +23,20 @@ public class ShellSort {
                 }
                 arr [lastIndex+gap] = temp;
             }
-            System.out.println(Arrays.toString(arr));
+//            System.out.println(Arrays.toString(arr));
             gap /= 2;
         }
+    }
+    public static void main(String[] args) {
+
+//        Random random = new Random();
+//        int[] arry = new int[80000];
+//        for (int i =0;i<arry.length;i++) {
+//            arry[i] = random.nextInt(80000);
+//        }
+//
+//        System.out.println(System.currentTimeMillis());
+//        shellSort(arry);
+//        System.out.println(System.currentTimeMillis());
     }
 }
