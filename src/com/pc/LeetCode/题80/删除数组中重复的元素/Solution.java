@@ -16,34 +16,34 @@ import java.util.Arrays;
 public class Solution {
 
 	public static int removeDuplicates(int[] nums) {
-		int i = 0;
-		int j = i + 1;
-		while (i < nums.length && j < nums.length) {
-
-			if (nums[j] > nums[i]) {
-				if (j - i >= 2) {
-					nums[i + 1] = nums[j];
-					i += 1;
-				} else {
-					i += 1;
+		// j定义为下一个可覆盖的位置
+		int j = 1;
+		int count = 1;
+		for (int i = 1; i < nums.length; i++) {
+			if (nums[i] == nums[i-1]) {
+				count++;
+				if (count <= 2) {
+					// 这一步是关键，num[i]向左移动到可覆盖点,即使nums[j]已经等于nums[i]，虽然多了不必要的复制操作，但是可以减少很多边界值的判断，不信你可以试一下！！！
+					nums[j] = nums[i];
+					j++;
 				}
-				j = i + 1;
-
 			} else {
+				count = 1;
+				nums[j] = nums[i];
 				j++;
+
 			}
 		}
+		return j;
 
-		if (j - i >= 2 && nums[j - 1] > nums[i]) {
-			i++;
-		}
-		System.out.println("删除后的数组：" + Arrays.toString(nums) + "删除后数组长度:" + (i + 1));
-		return i+1;
 	}
 
 	public static void main(String[] args) {
 //		int[] arr = { 1,1,1,2,2,3 };
-		int[] arr = { 0,0,1,1,1,1,2,3,3};
-		removeDuplicates(arr);
+//		int[] arr = { 1,1,1,1,2,2,3};
+		int[] arr = { 0, 0, 1, 1, 1, 1, 2, 3, 3 };
+		int i = removeDuplicates(arr);
+		System.out.println(Arrays.toString(arr));
+		System.out.println(i);
 	}
 }
