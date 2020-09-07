@@ -33,18 +33,22 @@ public class Solution {
 
 	private static void binaryTreePaths(TreeNode root, String path) {
 
-		path += root.val;
+		StringBuilder builder = new StringBuilder(path);
+		builder.append(root.val);
+//		path += root.val;
 		if (root.left == null && root.right == null) {
 			// 是叶子节点
-			list.add(path);
+			list.add(builder.toString());
 		}
 
+		builder.append("->");
+
 		if (root.left != null) {
-			binaryTreePaths(root.left, path + "->");
+			binaryTreePaths(root.left, builder.toString());
 		}
 
 		if (root.right != null) {
-			binaryTreePaths(root.right, path + "->");
+			binaryTreePaths(root.right, builder.toString());
 		}
 
 	}
