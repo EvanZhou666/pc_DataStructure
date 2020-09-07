@@ -33,6 +33,7 @@ public class Solution {
 
 	private static void binaryTreePaths(TreeNode root, String path) {
 
+		// 字符串拼接优化 在LeetCode上 += 拼接 比StringBuilder拼接居然慢12ms
 		StringBuilder builder = new StringBuilder(path);
 		builder.append(root.val);
 //		path += root.val;
