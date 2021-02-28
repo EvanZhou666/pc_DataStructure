@@ -1,63 +1,68 @@
 package com.pc.LeetCode.题99.恢复二叉搜索树;
 
+import com.pc.LeetCode.common.TreeNode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.pc.LeetCode.common.TreeNode.conver2Tree;
+import static com.pc.LeetCode.common.TreeNode.levelOrder;
+import static com.pc.LeetCode.common.TreeNode.listOfElecments;
+
 /**
- * 给你二叉搜索树的根节点 root ，该树中的两个节点被错误地交换。请在不改变其结构的情况下，恢复这棵树。
- *   2
- * /  \
- * 1    4
- *     /
- *    3
- *     \
- *      5
- * 中序遍历的结果是 1 2 3 5 4
+ *
+ *@author Evan
+ *@since 2021/2/21 21:59
  */
 public class Solution {
 
-    static TreeNode lastNode;
+	private Long preVal = Long.MIN_VALUE;
+	private TreeNode preNode = null;
 
-    public static void recoverTree(TreeNode root) {
-        lastNode = new TreeNode(Integer.MIN_VALUE,null,null);
-        inOrdertraversal(root);
-    }
+	private void swapNodeVal(TreeNode node1,TreeNode node2) {
+		int temp = node1.val;
+		node1.val = node2.val;
+		node2.val = temp;
+	}
 
-    // 中序遍历
-    public static void inOrdertraversal(TreeNode root) {
+	public void recoverTree(TreeNode root) {
+		if (root == null) {
+			return;
+		}
+//		if (root.left !=null && root.left.val>root.val) {
+//			swapNodeVal(root.left,root);
+//		}
 
-        if (root == null) {
-            return;
-        }
-        inOrdertraversal(root.left);
-        System.out.println(root.val);
-        if (lastNode !=null && lastNode.val > root.val) {
-            // 交换该节点和上个节点的值
-            int temp = lastNode.val;
-            lastNode.val = root.val;
-            root.val = temp;
-        }
-        lastNode = root;
-        inOrdertraversal(root.right);
-    }
+//		if (root.right !=null && root.right.val<root.val) {
+//			swapNodeVal(root.right,root);
+//		}
 
-    public static void main(String[] args) {
+		recoverTree(root.left);
+		if (root.val <= preVal) {
+			int num = root.val;
+			root.val = preVal.intValue();
+			preNode.val = num;
+		}
+		preVal = Long.valueOf(root.val);
+		preNode = root;
+		recoverTree(root.right);
+	}
 
-    }
-}
+	public static void main(String[] args) {
+		List<List<Integer>> ll = new ArrayList<>();
+//		ll.add(listOfElecments(1));
+//		ll.add(listOfElecments(3,null));
+//		ll.add(listOfElecments(null,2,null,null));
+		ll.add(listOfElecments(3));
+		ll.add(listOfElecments(1,4));
+		ll.add(listOfElecments(null,null,2,null));
+		TreeNode treeNode = conver2Tree(ll);
+		levelOrder(treeNode);
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
+		System.out.println("===========恢复之后==========");
+		Solution solution = new Solution();
+	    solution.recoverTree(treeNode);
+		levelOrder(treeNode);
 
-    TreeNode() {
-    }
-
-    TreeNode(int val) {
-        this.val = val;
-    }
-
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
+	}
 }
