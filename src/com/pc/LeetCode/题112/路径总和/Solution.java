@@ -30,10 +30,6 @@ public class Solution {
 			return sumNow == targetSum && isLeaf;
 		}
 
-		if (sumNow + root.val > targetSum) {
-			return false;
-		}
-
 		sumNow += root.val;
 
 		boolean isL = dfs(root.left, sumNow, root.left == null && root.right == null);
