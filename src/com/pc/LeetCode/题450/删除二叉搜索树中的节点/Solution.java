@@ -23,71 +23,49 @@ import static com.pc.LeetCode.common.TreeNode.listOfElecments;
  */
 public class Solution {
 
-    private TreeNode keyNode;
-    private TreeNode precessorParent;
-    private boolean precessorInRightTree;
+	public TreeNode deleteNode(TreeNode root, int key) {
+		return dfs(root, null, key);
+	}
 
-    public TreeNode deleteNode(TreeNode root, int key) {
-        if (root == null) {
-            return null;
-        }
+	public TreeNode dfs(TreeNode root, TreeNode parent, int key) {
+		if (root == null) {
+			return null;
+		}
 
-        dfs(root, null, key);
-        return root;
-    }
+		if (root.val == key) {
+			if (root.left == null && root.right == null) {
+				return null;
+			} else if (root.left != null && root.right == null) {
+				return root.left;
+			} else if (root.left == null && root.right != null) {
+				return root.right;
+			} else {
+				TreeNode precessor = root.left;
 
-    public void dfs(TreeNode root, TreeNode parent, int key) {
+				while (precessor.right != null) {
+					precessor = precessor.right;
+				}
+				precessor.right = root.right;
+				return root.left;
+			}
+		} else if (key < root.val) {
+			root.left = dfs(root.left, root, key);
+		} else {
+			root.right = dfs(root.right, root, key);
+		}
+		return root;
 
-        if (root.val == key) {
-            keyNode = root;
-            // 找到前驱节点
-            TreeNode precessor = removePrecessor(root);
-            if (precessor != null) {
-                if (precessorInRightTree) {
-                    precessorParent.right = null;
-                } else {
-                    keyNode.left = null;
-                }
-                keyNode.val = precessor.val;
-            } else {
+	}
 
-            }
-        } else if (key > root.val) {
-            dfs(root.right, root, key);
-        } else if (key < root.val) {
-            dfs(root.left, root, key);
-        }
-    }
-
-
-    public TreeNode removePrecessor(TreeNode root) {
-        // 比root稍微小一点的数
-        TreeNode precessor = null;
-        if (root.left != null) {
-            precessor = root.left;
-            precessorParent = root;
-            TreeNode node = precessor;
-            while (node != null && node.right != null) {
-                precessorParent = node;
-                precessorInRightTree = true;
-                node = node.right;
-            }
-            precessor = node;
-        }
-        return precessor;
-
-    }
-
-
-    public static void main(String[] args) {
-        List<List<Integer>> ll = new ArrayList<>();
-        ll.add(listOfElecments(5));
-        ll.add(listOfElecments(3, 6));
-        ll.add(listOfElecments(2, 4, null, 7));
-        TreeNode root = conver2Tree(ll);
-//        TreeNode.levelOrder(root);
-        Solution solution = new Solution();
-        TreeNode node = solution.deleteNode(root, 5);
-        TreeNode.levelOrder(node);
-    }
+	public static void main(String[] args) {
+		List<List<Integer>> ll = new ArrayList<>();
+		ll.add(listOfElecments(5));
+		ll.add(listOfElecments(3, 6));
+		ll.add(listOfElecments(2, 4, null, 7));
+		TreeNode root = conver2Tree(ll);
+		//        TreeNode.levelOrder(root);
+		Solution solution = new Solution();
+		TreeNode node = solution.deleteNode(root, 3);
+		TreeNode.levelOrder(node);
+	}
 }
