@@ -1,6 +1,7 @@
 package com.pc.LeetCode.common;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -76,27 +77,47 @@ public class TreeNode {
 	 * 层序遍历二分搜索树
 	 * @param root
 	 */
-	public static void levelOrder(TreeNode root){
-		LinkedList<TreeNode> quque = new LinkedList();
-		if (root!=null){
-			quque.offer(root);
-			doLevelOrder(quque);
+	public static void levelOrder(TreeNode root) {
+		Deque<TreeNode> quque = new LinkedList();
+		if (root != null) {
+			quque.addLast(root);
+		}
+		List<TreeNode> level = new ArrayList<>();
+		while (!quque.isEmpty()) {
+			TreeNode poll = quque.removeFirst();
+			System.out.print(poll.val + "  ");
+			if (poll.left != null) {
+				level.add(poll.left);
+			}
+
+			if (poll.right != null) {
+				level.add(poll.right);
+			}
+
+			if (quque.isEmpty()) {
+				System.out.println();
+				for (TreeNode node : level) {
+					quque.addLast(node);
+				}
+				level.clear();
+			}
 		}
 	}
 
 	//    层序遍历：每次出队一个元素，便将该节点的左右孩子节点分别入队。
-	private static void doLevelOrder(LinkedList queue){
-		while (!queue.isEmpty()){
-			TreeNode poll = (TreeNode)queue.poll();
-			System.out.println(poll.val);
-			if (poll.left!=null){
-				queue.offer(poll.left);
-			}
-			if (poll.right!=null){
-				queue.offer(poll.right);
-			}
-		}
-	}
+//	private static void doLevelOrder(LinkedList queue){
+//		while (!queue.isEmpty()){
+//			TreeNode poll = (TreeNode)queue.poll();
+//			System.out.print(poll.val);
+//			System.out.print(" ");
+//			if (poll.left!=null){
+//				queue.offer(poll.left);
+//			}
+//			if (poll.right!=null){
+//				queue.offer(poll.right);
+//			}
+//		}
+//	}
 
 	public static void main(String[] args) {
 		List<List<Integer>> ll = new ArrayList<>();
