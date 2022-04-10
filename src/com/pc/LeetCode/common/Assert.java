@@ -16,4 +16,11 @@ public class Assert {
         return value;
     }
 
+    public static boolean assertEquals(Integer realValue, Integer excepted) {
+        if (realValue != excepted) {
+            throw new IllegalArgumentException("The value is not Equals");
+        }
+        return true;
+    }
+
 }
