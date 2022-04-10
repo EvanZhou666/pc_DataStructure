@@ -9,4 +9,11 @@ public class Assert {
         return value;
     }
 
+    public static boolean assertIsFalse(boolean value) {
+        if (value) {
+            throw new IllegalArgumentException("The value is not true");
+        }
+        return value;
+    }
+
 }
