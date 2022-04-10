@@ -1,6 +1,5 @@
 package com.pc.LeetCode.题896.单调数列;
 
-import com.sun.org.apache.regexp.internal.RE;
 
 /**
  * 如果数组是单调递增或单调递减的，那么它是单调的。
