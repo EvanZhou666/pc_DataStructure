@@ -18,7 +18,7 @@ public class Assert {
 
     public static boolean assertEquals(Integer realValue, Integer excepted) {
         if (realValue != excepted) {
-            throw new IllegalArgumentException("The value is not Equals");
+            throw new IllegalArgumentException("The value is not Equals.excepted is "+ excepted +" but realvalue is "+realValue);
         }
         return true;
     }
