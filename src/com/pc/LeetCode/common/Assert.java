@@ -23,4 +23,11 @@ public class Assert {
         return true;
     }
 
+    public static boolean assertEquals(double realValue, double excepted) {
+        if (realValue != excepted) {
+            throw new IllegalArgumentException("The value is not Equals.excepted is "+ excepted +" but realvalue is "+realValue);
+        }
+        return true;
+    }
+
 }
