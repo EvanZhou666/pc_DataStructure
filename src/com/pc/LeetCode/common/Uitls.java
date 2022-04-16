@@ -19,4 +19,12 @@ public class Uitls {
         }
     }
 
+    public static void printArray(int[] nums, int l, int r) {
+        if (r >= nums.length) {
+            System.out.println(Arrays.toString(nums) + " l=" + l + " r=nil");
+        } else {
+            System.out.println(Arrays.toString(nums) + " l=" + l + " r=" + r);
+        }
+    }
+
 }
