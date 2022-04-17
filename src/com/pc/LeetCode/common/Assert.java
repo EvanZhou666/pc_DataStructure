@@ -1,5 +1,7 @@
 package com.pc.LeetCode.common;
 
+import java.util.Objects;
+
 public class Assert {
 
     public static boolean assertIsTrue(boolean value) {
@@ -29,5 +31,20 @@ public class Assert {
         }
         return true;
     }
+
+    public static boolean assertEquals(String realValue, String excepted) {
+        if (!Objects.equals(realValue,excepted)) {
+            throw new IllegalArgumentException("The value is not Equals.excepted is "+ excepted +" but realvalue is "+realValue);
+        }
+        return true;
+    }
+
+    public static boolean assertNotEquals(String realValue, String excepted) {
+        if (Objects.equals(realValue,excepted)) {
+            throw new IllegalArgumentException("The value is not Equals.excepted is "+ excepted +" but realvalue is "+realValue);
+        }
+        return true;
+    }
+
 
 }
