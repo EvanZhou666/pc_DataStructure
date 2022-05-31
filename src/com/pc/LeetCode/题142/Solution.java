@@ -18,10 +18,7 @@ public class Solution {
             }
             fast = fast.next.next;
             slow = slow.next;
-            // 相遇的时候，快指针比慢指针多走一圈，多走的步数就是环的长度
-            // 设在第x个位置成环 链表的长度为n 则：(t-x) % n = (2t-x) %n
-            // 2 * (x/1) = (x/1)
-            // (2-1) *
+            // 结论 从相遇点到入环点的距离加上 n-1圈的环长，恰好等于从链表头部到入环点的距离。
             if (fast == slow) {
                 slow = head;
                 while (slow != fast) {
