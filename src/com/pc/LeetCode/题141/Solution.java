@@ -1,4 +1,4 @@
-package com.pc.LeetCode.题143;
+package com.pc.LeetCode.题141;
 
 /**
  * 141.环形链表
