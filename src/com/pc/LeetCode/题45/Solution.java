@@ -1,5 +1,7 @@
 package com.pc.LeetCode.题45;
 
+import com.pc.LeetCode.common.Assert;
+
 /**
  * 45. 跳跃游戏 II
  * 给你一个非负整数数组 nums ，你最初位于数组的第一个位置。
@@ -22,12 +24,15 @@ package com.pc.LeetCode.题45;
 public class Solution {
 
     /**
+     *
      * 书本上的答案
      * @param nums
      * @return
      */
     public int jump(int[] nums) {
         int n = nums.length;
+        // farthest 标记了所有选择 [i..end] 中能够跳到的最远距离
+        // i 和 end 标记了可以选择的跳跃步数
         int end = 0, farthest = 0;
         int jumps = 0;
         for (int i = 0; i < n - 1; i++) {
@@ -38,5 +43,11 @@ public class Solution {
             }
         }
         return jumps;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int jump = solution.jump(new int[]{2, 3, 1, 1, 4});
+        Assert.assertEquals(2, jump);
     }
 }
