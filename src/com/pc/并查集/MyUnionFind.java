@@ -30,7 +30,7 @@ public class MyUnionFind {
      * @param x
      * @return
      */
-    private int find(int x) {
+    public int find(int x) {
         // 如果自己就是就是的祖先，也就说自己就是"根节点",直接返回
         if (x == nodes[x]) {
             return x;
