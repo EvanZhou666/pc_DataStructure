@@ -2,10 +2,6 @@ package com.pc.LeetCode.题10;
 
 import com.pc.LeetCode.common.Assert;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.regex.Pattern;
-
 /**
  * 10. 正则表达式匹配
  * 给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。

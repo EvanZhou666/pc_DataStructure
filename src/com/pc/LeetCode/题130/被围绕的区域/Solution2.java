@@ -1,4 +1,4 @@
-package com.pc.LeetCode.題130.被围绕的区域;
+package com.pc.LeetCode.题130.被围绕的区域;
 
 import com.pc.LeetCode.common.Assert;
 import com.pc.LeetCode.common.Uitls;

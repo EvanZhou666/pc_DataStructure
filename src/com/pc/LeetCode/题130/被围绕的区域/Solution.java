@@ -1,4 +1,4 @@
-package com.pc.LeetCode.題130.被围绕的区域;
+package com.pc.LeetCode.题130.被围绕的区域;
 
 import com.pc.LeetCode.common.Assert;
 import com.pc.LeetCode.common.Uitls;
@@ -34,7 +34,8 @@ class Solution {
 
     /**
      * 只有和边界上的'O'相连接的O，才不会被替换。因此可以考虑从矩形的中间进行深度遍历(依次进行上下左右的搜索)，如果该位置是'O'则进行上下左右的搜索，看能否到达边界上的'O'
-     * 果遇到‘x’则跳过，换一个方向
+     * 如果遇到‘x’则跳过，换一个方向
+     * ps：该思路会导致超时问题，无法通过全部的测试用例！！！
      * @param board
      */
     public void solve(char[][] board) {
