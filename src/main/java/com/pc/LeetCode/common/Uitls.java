@@ -45,6 +45,23 @@ public class Uitls {
         }
         return input;
     }
+
+    public static int[][] convertToInts(String inputString) {
+        Integer[] CC = new Integer[0];
+        List<? extends Integer[]> jsonArray = JSONArray.parseArray(inputString, CC.getClass());
+
+        int[][] input = new int[jsonArray.size()][jsonArray.get(0).length];
+
+        for (int i = 0; i < jsonArray.size(); i++) {
+            for (int j = 0; j < jsonArray.get(i).length; j++) {
+                Integer[] character = jsonArray.get(i);
+                input[i][j] = character[j];
+            }
+
+        }
+        return input;
+    }
+
     public static void printBoard(char[][] board, String message) {
         System.out.println("==========="+message+"========");
         for (int i = 0; i < board.length; i++) {
