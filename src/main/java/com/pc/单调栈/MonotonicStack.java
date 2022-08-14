@@ -52,6 +52,11 @@ public class MonotonicStack {
     }
 
 
+    /**
+     * 找数组中左边比自己大的且离自己最近的的元素 和找数组中右边比自己大的且离自己最近的元素
+     * @param arr 假设arr中出现的都是正数,且不会出现重复的元素
+     * @return 二维数组 result[i][0]，左边比自己大的离自己最近的元素，如果不存在返回-1 result[i][0]，右边比自己大的离自己最近的元素，如果不存在返回-1
+     */
     public static int[][] leftRightMaxValue(int arr[]) {
         int[][] lrMin = new int[arr.length][2];
         // 维护一个单调栈，栈底到栈顶，元素依次减小
