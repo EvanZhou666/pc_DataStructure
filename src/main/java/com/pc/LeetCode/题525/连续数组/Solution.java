@@ -96,25 +96,48 @@ public class Solution {
         return maxLength == Integer.MIN_VALUE ? 0 : maxLength;
     }
 
+
+    /**
+     * 方式2的前缀数组+哈希表代码优化，思路和方式2是一致的，不过把0看作-1
+     * @param nums
+     * @return
+     */
+    public static int findMaxLength3(int[] nums) {
+        int maxLength = Integer.MIN_VALUE;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0,-1);// 处理nums[0...1]0和1相等的情况。
+        int sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i] == 0 ? -1 : 1;
+            if (map.containsKey(sum)) {
+                maxLength = Math.max(maxLength, i - map.get(sum));
+            } else {
+                map.put(sum , i);
+            }
+        }
+
+        return maxLength == Integer.MIN_VALUE ? 0 : maxLength;
+    }
+
     public static void main(String[] args) {
         int maxLength;
 
-        maxLength = findMaxLength2(new int[]{0,1,1,0,1,1,1,0});
+        maxLength = findMaxLength3(new int[]{0,1,1,0,1,1,1,0});
         Assert.assertEquals(maxLength, 4);
 
-        maxLength = findMaxLength2(new int[]{0,0,1,0,0,0,1,1});
+        maxLength = findMaxLength3(new int[]{0,0,1,0,0,0,1,1});
         Assert.assertEquals(maxLength, 6);
         System.out.println(maxLength);
 
-        maxLength = findMaxLength2(new int[]{0, 1, 0});
+        maxLength = findMaxLength3(new int[]{0, 1, 0});
         System.out.println(maxLength);
         Assert.assertEquals(maxLength, 2);
 
-        maxLength = findMaxLength2(new int[]{0,0,1,0,0,0,1,1});
+        maxLength = findMaxLength3(new int[]{0,0,1,0,0,0,1,1});
 
         Assert.assertEquals(maxLength, 6);
 
-        maxLength = findMaxLength2(new int[]{0, 1});
+        maxLength = findMaxLength3(new int[]{0, 1});
         System.out.println(maxLength);
         Assert.assertEquals(maxLength, 2);
     }
