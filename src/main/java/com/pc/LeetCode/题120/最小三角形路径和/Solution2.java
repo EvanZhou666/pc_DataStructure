@@ -46,4 +46,33 @@ public class Solution2 {
 		return minSum;
 	}
 
+	/**
+	 * 动态规划官方题解，空间有规划 从N^2 优化到 N
+	 * @param triangle
+	 * @return
+	 */
+	public int minimumTotal2(List<List<Integer>> triangle) {
+		int n = triangle.size();
+		// 空间优化，只需要一个一维的空间
+		int[] f = new int[n];
+		f[0] = triangle.get(0).get(0);
+		for (int i = 1; i < n; ++i) {
+			// 先计算 如果是从上往下移动时候的最小路径
+			f[i] = f[i - 1] + triangle.get(i).get(i);
+
+			System.out.println("f[i]="+f[i] + "");
+			for (int j = i - 1; j > 0; --j) {
+				// 再计算，如果从左往右移动的最小路径。这里的f[j-1]是上一行
+				f[j] = Math.min(f[j - 1], f[j]) + triangle.get(i).get(j);
+				System.out.print("f[i]="+f[i] +" ");
+			}
+			f[0] += triangle.get(i).get(0);
+		}
+		int minTotal = f[0];
+		for (int i = 1; i < n; ++i) {
+			minTotal = Math.min(minTotal, f[i]);
+		}
+		return minTotal;
+	}
+
 }
