@@ -4,8 +4,6 @@ import com.pc.LeetCode.common.Assert;
 
 public class Solution {
 
-    static int deep = 0;
-
     public boolean canPartition(int[] nums) {
 
         int C = 0;
@@ -31,7 +29,6 @@ public class Solution {
      * @return
      */
     private boolean dfs(int i, int c, int[] nums, Boolean[][] memo) {
-//        print("i:" + i + " c:" + c, false);
         if (i < 0 || c < 0) {
             return false;
         }
@@ -47,23 +44,6 @@ public class Solution {
         memo[i][c] = res;
         return res;
     }
-
-//    private static void print(Object param1, Object res) {
-//        if (param1 != null) {
-//            for (int i = 0; i < deep; i++) {
-//                System.out.print(" ");
-//            }
-//            System.out.println( param1);
-//        }
-//
-//        if (res != null) {
-//            for (int i = 0; i < deep; i++) {
-//                System.out.print(" ");
-//            }
-//            System.out.println("res:" + res);
-//        }
-//
-//    }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
