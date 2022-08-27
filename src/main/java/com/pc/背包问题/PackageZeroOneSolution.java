@@ -23,8 +23,11 @@ public class PackageZeroOneSolution {
      * @return
      */
     public static int knapsack01(int[] weight, int[] v, int C) {
-//        return calMaxValueRecursive(weight, v, v.length - 1, C);
+        // 递归求解
+        // return calMaxValueRecursive(weight, v, v.length - 1, C);
         return calMaxValueDp(weight, v, C);
+        // 动态规划空间优化到O(2*C)
+        // return calMaxValueDpSpaceOptimization(weight, v, C);
     }
 
     /**
@@ -85,6 +88,44 @@ public class PackageZeroOneSolution {
         }
 
         return dp[n - 1][C];
+    }
+
+
+    /**
+     * 使用动态规划思想求解 空间优化 把n*C的空间优化为2*C 滚动数组技巧<br/>
+     * 由于dp[n,c]的状态只于前一个状态有关 dp[n-1][c] ，因此只使用两个数组就行了<br/>
+     * 一个存放先前的值，另一个存放当前行的值<br/>
+     * <img src="0-1背包问题.png"/> <br/>
+     * @param weight
+     * @param v
+     * @param C
+     * @return
+     */
+    private static int calMaxValueDpSpaceOptimization(int[] weight, int[] v, int C) {
+        int n = weight.length; // 物品数目
+        int[][] dp = new int[2][C+1];
+
+        // 初始化第0行数据
+        for (int j = 0; j < dp[0].length; j++) {
+            if (j >= weight[0]) {
+                dp[0][j] = v[0];
+            }
+        }
+
+        // 遍历物品
+        for (int i = 1; i < n; i++) {
+            // 访问先前背包容量
+            for (int j = 0; j < C + 1; j++) {
+                // 不放入第i个物品时的时候最大价值
+                dp[i % 2][j] = dp[(i - 1) % 2][j];
+                // 减去第i个物品后的背包容量
+                if (j - weight[i] >= 0) {
+                    dp[i % 2][j] = Math.max(dp[i % 2][j], dp[(i - 1) % 2][j - weight[i]] + v[i]);
+                }
+            }
+        }
+
+        return dp[(n - 1) % 2][C];
     }
 
     public static void main(String[] args) {
