@@ -20,7 +20,7 @@ public class Solution2 {
         int sumA_2 = Arrays.stream(nums).sum() + target;
 
         // 背包容量不可能为小数，如果sumA不能整除，return 0
-        if (sumA_2 % 2 != 0) {
+        if (sumA_2 % 2 != 0 || sumA_2 < 0) {
             return 0;
         }
 

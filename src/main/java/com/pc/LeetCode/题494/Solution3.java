@@ -19,7 +19,7 @@ public class Solution3 {
         int sumA_2 = Arrays.stream(nums).sum() + target;
 
         // 背包容量不可能为小数，如果sumA不能整除，return 0
-        if (sumA_2 % 2 != 0) {
+        if (sumA_2 % 2 != 0 || sumA_2 < 0) {
             return 0;
         }
 
@@ -28,13 +28,13 @@ public class Solution3 {
         int[] dp = new int[C + 1]; // 定义dp[i]为考虑在[0...n]物品区间凑出i的组合个数, 则 dp[i] = dp’[i] + dp‘[j- num[i]]; 0<=n<nums.length
         // 这里很细节，很特殊。这种情况下，可以理解在物品[0,0]区间内选取物品凑出0的组合个数，不选取任何物品也可看作一种组合 所以dp[0] = 1;
         dp[0] = 1;
-
-        for (int j = 1; j < nums.length; j++) {
+        // 先遍历物品
+        for (int j = 0; j < nums.length; j++) {
+            // 再遍历背包容量，由于滚动数组空间是复用的，dp[i]依赖它前面的dp[i-nums[j]],所以数组要从后面开始覆盖
             for (int i = C; i - nums[j] >= 0; i--) {
                 dp[i] += dp[i - nums[j]];
             }
 
-            System.out.println(Arrays.toString(dp));
         }
 
         return dp[C];
