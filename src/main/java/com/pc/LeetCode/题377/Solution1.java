@@ -20,7 +20,7 @@ public class Solution1 {
         int[] dp = new int[target + 1];
         dp[0] = 1;
         Arrays.sort(nums);
-        // 定义dp[i]凑出target=i的组合个数, 则dp[i] = sum( dp[i-nums[0] 、dp[i-nums[1] .... + dp[i-nums[n]]]) 其中n<nums.length
+        // 定义dp[i]凑出target=i的组合个数, 则dp[i] = sum( dp[i-nums[0]] 、dp[i-nums[1]] .... + dp[i-nums[n]]]) 其中n<nums.length
         // 第一层循环，相当于在遍历背包容量
         for (int i = 1; i < dp.length; i++) {
             // 第2层循环，遍历物品。
