@@ -1,10 +1,13 @@
 package com.pc.LeetCode.题648;
 
-import com.pc.LeetCode.题208.Trie;
 
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * https://leetcode.cn/problems/replace-words/
+ * 648. 单词替换<br/>
+ * <img src="./img.png">
+ */
 public class Solution {
 
     /**
@@ -15,24 +18,20 @@ public class Solution {
      */
     public String replaceWords(List<String> dictionary, String sentence) {
         Trie trie = new Trie();
+
         String[] words = sentence.split(" ");
         for (String s : dictionary) {
             trie.insert(s);
+        }
 
-            for (int i = 0; i < words.length; i++) {
-                String dictRoot = trie.searchDictRoot(words[i]);
-                if (dictRoot != null) {
-                    words[i] = dictRoot;
-                }
+        for (int i = 0; i < words.length; i++) {
+            String dictRoot = trie.searchDictRoot(words[i]);
+            if (dictRoot != null) {
+                words[i] = dictRoot;
             }
         }
 
-        StringBuilder builder = new StringBuilder();
-        for (String word : words) {
-            builder.append(" ").append(word);
-        }
-
-        return builder.substring(1);
+        return String.join(" ", words);
 
     }
 
@@ -57,7 +56,6 @@ public class Solution {
 
                 node = node.children[word.charAt(i) - 'a'];
                 node.val = word.charAt(i);
-//                node.children = new Trie[26];
                 if (i == word.length() - 1) {
                     node.finished = true;
                     node.str = word;
