@@ -39,7 +39,6 @@ public class Solution {
         ans.add(1);
 
         while (seq < n) {
-
             while (hasChildren(number, n) && seq < n) {
                 number = number * 10;
                 ans.add(number);
@@ -49,14 +48,11 @@ public class Solution {
             while (!hasSlibing(number, n) && seq < n) {
                 number = number / 10;
             }
-
             number = number + 1;
             ans.add(number);
             seq ++;
         }
-
         return ans;
-
     }
 
     // number右边是否还有紧邻着的兄弟节点
