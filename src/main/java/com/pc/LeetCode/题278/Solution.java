@@ -6,7 +6,6 @@ package com.pc.LeetCode.题278;
 public class Solution {
 
     public int firstBadVersion(int n) {
-
         int left = 0, right = n - 1;
         int mid;
         while (left <= right) {
