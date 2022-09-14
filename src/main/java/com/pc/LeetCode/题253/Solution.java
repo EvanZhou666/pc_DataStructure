@@ -7,13 +7,7 @@ import java.util.Comparator;
 
 public class Solution {
 
-    /**
-     * 方法1的优化思路，方法1坐标值每次都需要自增1，如果在该坐标轴上，有1个会议开始，则所需资源count + 1.反之有会议结束，则count-1，
-     * 如果同时遇到会议开始和会议结束，count 先减再加。 坐标值每次自增1，导致效率低下。
-     * 如果我们能够在排好序的”有效坐标值“上，进行游走，检查该坐标值处的会议情况就好了，不需要每次坐标值+1，然后轮询所有的intervals
-     * @param intervals
-     * @return
-     */
+
     public int minMeetingRooms(int[][] intervals) {
         // 按会议开始时间从小到大排序，如果开始时间相同，则按结束时间从大到小排序
         Arrays.sort(intervals, new Comparator<int[]>() {
