@@ -12,6 +12,7 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
         <dependency>
@@ -20,7 +21,35 @@
             <version>2.0.10</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>24.0-jre</version>
+        </dependency>
+
+
+
     </dependencies>
 
-    
+    <repositories>
+        <repository>
+            <!-- id必须唯一 -->
+            <id>jboss-repository</id>
+            <!-- 见名知意即可 -->
+            <name>jboss repository</name>
+            <!-- 仓库的url地址 -->
+            <url>http://repository.jboss.org/nexus/content/groups/public-jboss/</url>
+        </repository>
+        <repository>
+            <!-- id必须唯一 -->
+            <id>aliyun-repository</id>
+            <!-- 见名知意即可 -->
+            <name>aliyun repository</name>
+            <!-- 仓库的url地址 -->
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
 </project>
+
