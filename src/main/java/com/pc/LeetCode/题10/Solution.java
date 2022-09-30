@@ -1,6 +1,7 @@
 package com.pc.LeetCode.题10;
 
 import com.pc.LeetCode.common.Assert;
+import com.pc.LeetCode.common.GoodQuestion;
 
 /**
  * 10. 正则表达式匹配
@@ -10,6 +11,7 @@ import com.pc.LeetCode.common.Assert;
  * '*' 匹配零个或多个前面的那一个元素
  * 所谓匹配，是要涵盖 整个 字符串 s的，而不是部分字符串。
  */
+@GoodQuestion(type = "正则匹配")
 public class Solution {
 
     /**
