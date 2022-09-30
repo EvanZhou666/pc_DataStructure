@@ -1,8 +1,10 @@
 package com.pc.LeetCode.题1060;
 
 import com.pc.LeetCode.common.Assert;
+import com.pc.LeetCode.common.GoodQuestion;
 
 
+@GoodQuestion(type = "二分搜索系列")
 public class Solution {
 
     // Return how many numbers are missing until nums[idx]
