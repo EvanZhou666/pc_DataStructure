@@ -1,5 +1,6 @@
 package com.pc.LeetCode.common;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 
 import java.util.Arrays;
@@ -19,6 +20,16 @@ public class Uitls {
             System.out.println(Arrays.toString(nums) + " l=" + l + " r=nil");
         } else {
             System.out.println(Arrays.toString(nums) + " l=" + l + " r=" + r);
+        }
+    }
+
+    public static void printList(List<List<Integer>> ll) {
+        if (!ll.isEmpty()) {
+            System.out.print("[");
+            for (int i = 0; i < ll.size(); i++) {
+                System.out.print(JSON.toJSONString(ll.get(i)));
+            }
+            System.out.println("]");
         }
     }
 
